@@ -2,6 +2,7 @@ package org.example;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class Main {
     // imperative vs declarative
@@ -17,12 +18,20 @@ public class Main {
             new Student(9L,"Mada",'M',23)
     );
     public static void main(String[] args) {
-        List<Student> studentList = getStudents(students);
-        for(Student st : studentList){
+        System.out.println("Imperative");
+        List<Student> listImperative = getStudentsImperative(students);
+        for(Student st : listImperative){
             System.out.println(st);
         }
+        System.out.println("Declarative");
+        List<Student> listDeclarative = getStudentsDeclarative(students);
+        /*for(Student st : listDeclarative){
+            System.out.println(st);
+        }*/
+        listDeclarative.forEach(System.out::println); // method reference
     }
-    public static List<Student> getStudents(List<Student> students){
+    // imperative style
+    public static List<Student> getStudentsImperative(List<Student> students){
         List<Student> list = new ArrayList<>();
         int counter = 0;
         int limit = 3;
@@ -36,5 +45,13 @@ public class Main {
             }
         }
         return list;
+    }
+
+    // declarative style
+    public static List<Student> getStudentsDeclarative(List<Student> students) {
+        return students.stream() // loop
+                .filter(st -> st.getGender()=='F') // if gender == F
+                .limit(3) // get only 3 elements
+                .collect(Collectors.toList());
     }
 }
